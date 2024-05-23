@@ -1,2 +1,2 @@
 # TO-DO-List-Frontend
-# Use Nextjs as frontend framework
+# Use NextJS as frontend framework
