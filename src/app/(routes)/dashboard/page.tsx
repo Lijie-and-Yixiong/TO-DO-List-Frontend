@@ -1,12 +1,16 @@
 'use client';
-import Navbar from "../components/navbar";
-import TodoCard from "../components/todoCard";
-import { useState,useEffect } from "react";
-import { TodoItem } from "../api/todolists/route";
+import Navbar from "@/components/navbar";
+import TodoCard from "@/components/todoCard";
+import AddTodoModal from "@/components/dashboardCompo/addTodoModal";
 
+import { useState,useEffect } from "react";
+import { TodoItem } from "@/app/api/todolists/route";
 
 export default function Dashboard(){
     const [todoItems,setTodoItems]=useState<TodoItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [isShowing,setIsShowing] =useState(true);
     useEffect(()=>{
         const fetchData = async () => {
                 try {
@@ -15,6 +19,7 @@ export default function Dashboard(){
                 console.log("Data fetched");
                 console.log(fetchedData.data)
                 setTodoItems(fetchedData.data);
+                setIsLoading(false);
                 } catch (error) {
                 console.error('Error fetching data:', error);
                 }
@@ -23,17 +28,30 @@ export default function Dashboard(){
     },[])
 
     function handleAddTodo(): void {
-        
+        if (document) {
+            (document.getElementById('my_modal_4') as HTMLFormElement).showModal();
+        }
+        // TODO POST card data
+    }
+
+    function handleClick() {
+        setIsShowing((prev:boolean)=>!prev);
     }
 
     return(
         <div className="">
             <Navbar/>
-            <h1>Dashboard Page</h1>
-            <div className="flex flex-wrap gap-4 justify-items-start mx-10 mb-5">
+            <div className="bg-primary text-primary-content flex ">
+                <button className="btn btn-ghost text-xl" onClick={handleClick}>Todo List </button>
+                {isShowing?(<p>-</p>):(<p>+</p>)}
+            </div>
+            {isShowing&&
+            (<div className="flex flex-wrap gap-4 justify-items-start mx-10 mb-5 mt-3">
                 {todoItems.map((item:TodoItem,index:number)=>
                         <TodoCard key={index} todoItem={item}/>
                 )}
+                {isLoading?(<div>Loading</div>):
+                (
                 <div className="flex justify-center items-center bg-slate-800 w-96">
                     <button onClick={handleAddTodo} className="hover:bg-gray-200 
                                         border-double border-4 border-stone-500 
@@ -41,8 +59,16 @@ export default function Dashboard(){
                         +
                     </button>
                 </div>
+                )}
+            </div>)}
 
+
+
+
+            <div className="bg-primary text-primary-content my-2">
+                <button className="btn btn-ghost text-xl"> Completed </button>
             </div>
+            {/* TODO add compleeted card, and mark as different color */}
 
         </div>
     )
