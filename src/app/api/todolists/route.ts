@@ -13,7 +13,6 @@ export async function GET(){
         {title:"first" ,subTitle:"first subTitle" ,content:"first content" ,date:'1990-05-15T00:00:00Z' },
 
     ]
-    console.log(response);
     return NextResponse.json({"data":response,"message":"todolist retrieved",status:200});
 } 
 

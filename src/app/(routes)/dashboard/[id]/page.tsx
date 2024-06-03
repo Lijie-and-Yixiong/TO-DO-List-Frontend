@@ -3,10 +3,15 @@ import Navbar from "@/components/navbar";
 import TodoCard from "@/components/todoCard";
 import AddTodoModal from "@/components/dashboardCompo/addTodoModal";
 
+import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
 import { TodoItem } from "@/app/api/todolists/route";
 
-export default function Dashboard(){
+export default function Dashboard({params}:any){
+    //TODO Logout button
+    const router=useRouter();
+    // router.push('/main');
+    //TODO check login session
     const [todoItems,setTodoItems]=useState<TodoItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -41,6 +46,7 @@ export default function Dashboard(){
     return(
         <div className="">
             <Navbar/>
+            <h1>{params.id}</h1>
             <div className="bg-primary text-primary-content flex ">
                 <button className="btn btn-ghost text-xl" onClick={handleClick}>Todo List </button>
                 {isShowing?(<p>-</p>):(<p>+</p>)}

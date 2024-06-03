@@ -1,33 +1,23 @@
 import { NextResponse,NextRequest } from "next/server";
-import { UserLoginInfo } from "../login/route";
-
-interface ApiResponse{
-    message:string,
-}
+import { UserBasicInfo } from "../firebase/userBasicInfo";
+import { firebaseConfig ,auth} from "../firebase/firebaseConfig";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { userInfo } from "os";
+import { initializeApp } from "firebase/app";
 
 export async function POST(req:NextRequest){
+    initializeApp(firebaseConfig);
     const data=await req.json();
     console.log("Post received");
     console.log(JSON.stringify(data));
-    let responseMessage:ApiResponse={message:"Empty message"};
     try{
-
-        const response=await fetch('http://localhost:8080/api/v1/student',{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-            },
-            body:JSON.stringify(data),
-        })
-
-        //set up response message
-        responseMessage.message= await response.json();
-
-    }catch(err){
-        console.log(err);
+        const backendResponse=await createUserWithEmailAndPassword(auth,data.email,data.password);
+        console.log(backendResponse.user.uid);
+    }catch(err:any){
+        console.log(err.message);
+        return NextResponse.json({"message":"signup failed",status:500});
     }
-
-
-    return NextResponse.json({"message":responseMessage.message,status:200});
+    //TODO create a user doc in users collection in firebase to match each todos
+    return NextResponse.json({"message":"signup success",status:200});
 }
 

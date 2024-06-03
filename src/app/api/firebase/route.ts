@@ -64,7 +64,6 @@ export async function GET(req:NextRequest){
 
         return NextResponse.json({"message":"search Success"});
     }
-
     const response={};
     getData();
     return NextResponse.json({"data":response,"message":"todolist retrieved",status:200});

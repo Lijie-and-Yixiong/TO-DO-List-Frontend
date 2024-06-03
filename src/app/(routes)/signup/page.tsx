@@ -2,8 +2,9 @@
 
 import Navbar from "@/components/navbar";
 import SignupForm from "@/components/signupForm";
-import { FormEvent, useState } from "react";
-import { UserLoginInfo } from "../../api/login/route";
+import { FormEvent, useEffect, useState } from "react";
+import { UserBasicInfo } from "@/app/api/firebase/userBasicInfo";
+import { getSessionCookie } from "@/utils/jsCookieConfig";
 
 export default function Signup(){
     const [email,setEmail]=useState<string>('');
@@ -11,14 +12,22 @@ export default function Signup(){
     const [password,setPassword]=useState<string>('');
     const [confirmedPassword, setConfirmedPassword]=useState<string>('');
     const [signupRes,setSignupRes]=useState<string>('');
+    const [user,setUser]=useState<any>(null);
+
+    const [isLogin,setIsLogin]=useState(false);
+    useEffect(()=>{
+        if(getSessionCookie()!=undefined){
+            setIsLogin(true)
+        }
+    },[]);
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>){
         e.preventDefault();
-        const data:UserLoginInfo={
+        const data:UserBasicInfo={
             email:email,
             userName:userName,
             password:password
         }
-        //TODO check the user is exist or not
         try{
             const response=await fetch('/api/signup',{
                 method:"POST",
@@ -35,14 +44,15 @@ export default function Signup(){
             console.log(error);
         }
             
-        
 
         //TODO redirect to dashboard
     }
 
+
     return (
         <div className="min-h-screen flex flex-col bg-orange-200"> 
             <Navbar/>
+            {isLogin?(<h1>Logged in</h1>):(<h1>No login session</h1>)}
             <div className="flex flex-grow justify-center items-center">
                 <div className="w-1/3 bg-gray-100 p-8 rounded-lg shadow-lg">
                     <h1 className="text-3xl mb-6 text-center">Sign Up</h1>
