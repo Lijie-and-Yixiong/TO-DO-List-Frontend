@@ -1,17 +1,20 @@
-import { initialize } from "next/dist/server/lib/render-server";
-import { firebaseConfig} from "../firebase/firebaseConfig";
-import { initializeApp } from "firebase/app";
 import { signOut } from "firebase/auth";
 import { auth } from "@/utils/firebaseConfig";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { clearSessionCookie } from "@/utils/nextCookieConfig";
 
-export async function POST(){
+export async function POST(req:NextRequest){
+    const data=await req.json();
+    console.log(JSON.stringify(data));
     try{
         signOut(auth);
-        //TODO clear cookie sessoin
-        return NextResponse.json({"message":"log out"});
+        clearSessionCookie('session');
+        const response=NextResponse.json({"message":"Log out",status:200});
+        // response.cookies.set("session",'',{maxAge:0});
+        return response;
     }catch(err){
         console.log(err);
         return NextResponse.json({"message":"log out failed"});
     }
 }
+

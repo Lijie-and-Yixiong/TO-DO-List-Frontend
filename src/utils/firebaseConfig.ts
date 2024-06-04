@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, getFirestore, onSnapshot } from "firebase/firestore";
+import { getAuth,createUserWithEmailAndPassword} from "firebase/auth";
+import { collection, getFirestore, onSnapshot,getDocs, doc, getDoc, query, where, limit} from "firebase/firestore";
 import { initialize } from "next/dist/server/lib/render-server";
 
 interface TodoItem{
@@ -22,11 +22,12 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db=getFirestore();
 const todoCollectionRef=collection(db,'todos');
+const userInfoCollectionRef=collection(db,'userInfos');
 const auth=getAuth();
 
 
 const getData=()=>{ //get all todos 
-    onSnapshot(todoCollectionRef,(snapshot)=>{
+    onSnapshot(userInfoCollectionRef,(snapshot)=>{
         let todos:any[]=[];
         snapshot.docs.forEach((doc)=>{
             todos.push({
@@ -38,4 +39,19 @@ const getData=()=>{ //get all todos
     })
 }
 
-export {db,todoCollectionRef,auth,firebaseConfig};
+const getDocWithUid=async (uid:string)=>{
+    try{
+        const userQuery=query(userInfoCollectionRef,
+                                where('uid','==',uid),
+                                limit(1)); 
+        const querySnapshot= await getDocs(userQuery);
+        if(!querySnapshot.empty){
+            return querySnapshot.docs[0].data().username;
+        }
+    }catch(err){
+        console.log(err);
+    }
+}
+
+
+export {db,todoCollectionRef,auth,firebaseConfig,getDocWithUid,getData};

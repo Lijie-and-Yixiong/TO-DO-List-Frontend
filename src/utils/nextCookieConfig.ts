@@ -19,6 +19,6 @@ export const getSessionCookie = (): string | undefined => {
 
 };
 
-export const clearSessionCookie = () => {
-    cookies().delete
+export const clearSessionCookie = (cookieName:string) => {
+    cookies().delete(cookieName);
 };

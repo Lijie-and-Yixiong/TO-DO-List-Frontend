@@ -9,8 +9,8 @@ export type TodoItem={
 
 export async function GET(){
     const response:TodoItem[]=[
-        {title:"first" ,subTitle:"first subTitle" ,content:"first content" ,date:'1990-05-15T00:00:00Z' },
-        {title:"first" ,subTitle:"first subTitle" ,content:"first content" ,date:'1990-05-15T00:00:00Z' },
+        // {title:"first" ,subTitle:"first subTitle" ,content:"first content" ,date:'1990-05-15T00:00:00Z' },
+        // {title:"first" ,subTitle:"first subTitle" ,content:"first content" ,date:'1990-05-15T00:00:00Z' },
 
     ]
     return NextResponse.json({"data":response,"message":"todolist retrieved",status:200});

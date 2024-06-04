@@ -1,17 +1,20 @@
 'use client';
 import Navbar from "@/components/navbar";
 import TodoCard from "@/components/todoCard";
-import AddTodoModal from "@/components/dashboardCompo/addTodoModal";
 
 import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
 import { TodoItem } from "@/app/api/todolists/route";
+import AddTodoModal from "@/components/dashboardCompo/addTodoModal";
 
 export default function Dashboard({params}:any){
+    useEffect(()=>{
+        //TODO check login session
+        
+    },[])
     //TODO Logout button
     const router=useRouter();
     // router.push('/main');
-    //TODO check login session
     const [todoItems,setTodoItems]=useState<TodoItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -21,8 +24,6 @@ export default function Dashboard({params}:any){
                 try {
                 const fetchedData = await fetch('/api/todolists')
                     .then(response=>response.json());
-                console.log("Data fetched");
-                console.log(fetchedData.data)
                 setTodoItems(fetchedData.data);
                 setIsLoading(false);
                 } catch (error) {
@@ -53,22 +54,22 @@ export default function Dashboard({params}:any){
             </div>
             {isShowing&&
             (<div className="flex flex-wrap gap-4 justify-items-start mx-10 mb-5 mt-3">
-                {todoItems.map((item:TodoItem,index:number)=>
-                        <TodoCard key={index} todoItem={item}/>
-                )}
-                {isLoading?(<div>Loading</div>):
-                (
-                <div className="flex justify-center items-center bg-slate-800 w-96">
-                    <button onClick={handleAddTodo} className="hover:bg-gray-200 
-                                        border-double border-4 border-stone-500 
-                                        bg-gray-100 shadow-lg rounded-lg w-40 h-40">
-                        +
-                    </button>
-                </div>
+                {isLoading?(<h1>Loading...</h1>):(
+                    <>
+                        {todoItems.map((item:TodoItem,index:number)=>
+                            <TodoCard key={index} todoItem={item}/>
+                        )}
+                        <div className="flex justify-center items-center bg-slate-800 w-96">
+                            <button onClick={handleAddTodo} className="hover:bg-gray-200 
+                                                border-double border-4 border-stone-500 
+                                                bg-gray-100 shadow-lg rounded-lg w-40 h-40">
+                                +
+                            </button>
+                        </div>
+                        <AddTodoModal/>
+                    </>
                 )}
             </div>)}
-
-
 
 
             <div className="bg-primary text-primary-content my-2">

@@ -4,7 +4,6 @@ import Navbar from "@/components/navbar";
 import LoginForm from "@/components/loginForm";
 import { FormEvent, useEffect, useState } from "react";
 import { UserBasicInfo } from "@/app/api/firebase/userBasicInfo";
-import { setSessionCookie,getSessionCookie,clearSessionCookie } from "@/utils/jsCookieConfig";
 
 
 type backendRes={
@@ -39,11 +38,7 @@ export default function Login(){
             });
             
             const responseJSON=await response.json();
-            
             const accessToken:string=await responseJSON.accessToken;
-            // setSessionCookie(accessToken);
-            if(getSessionCookie()!=undefined)
-                setIsLogin(true);
         }catch(err){
             console.log(err);
         }
@@ -51,21 +46,25 @@ export default function Login(){
         setUserName('');
         setPassword('');
     }
+    async function handleLogout() {
+        try{
+            const response=await fetch('/api/logout',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",
+                },
+                body:JSON.stringify({})
+            });
 
-    function handleCheckLogin(): void {
-        const sessionCookie=getSessionCookie();
-        console.log(sessionCookie);
-    }
-
-    function handleLogout(): void {
-        clearSessionCookie();
-        if(getSessionCookie()==undefined)
-            setIsLogin(false);
+        }catch(err){
+            console.log(err);
+        }
     }
 
     return (
         <div className="min-h-screen flex flex-col bg-orange-200">
             <Navbar/>
+
             {isLogin?(<h1>Log in success</h1>):(<h1>Please login first</h1>)}
             <div className="flex flex-grow justify-center items-center">
                 <div className="w-1/3 bg-gray-100 p-8 rounded-lg shadow-lg">
@@ -77,12 +76,9 @@ export default function Login(){
                             setEmail={setEmail} setUserName={setUserName} setPassword={setPassword}/>
                         <div className="flex justify-evenly mt-5">
                             <button className="btn btn-active btn-ghost hover:bg-slate-500 hover:text-stone-300">Login</button>
-                            <button className="btn btn-active btn-ghost hover:bg-slate-500 text-center">Need elp?</button>
-                            <button onClick={handleCheckLogin} className="btn btn-active btn-ghost hover:bg-slate-500 text-center">Check login</button>
-                            <button onClick={handleLogout} className="btn btn-active btn-ghost hover:bg-slate-500 text-center">Log out tmp</button>
+                            <button onClick={handleLogout} className="btn btn-active btn-ghost hover:bg-slate-500 text-center">Need help</button>
 
                         </div>
-
                     </form>
                 </div>
             </div>
