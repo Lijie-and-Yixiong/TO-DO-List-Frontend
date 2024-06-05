@@ -1,6 +1,6 @@
 'use client';
 import Navbar from "@/app/(components)/navbar";
-import TodoCard from "@/app/(components)/todoCard";
+import TodoCard from "@/app/(components)/dashboardCompo/todoCard";
 
 import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
@@ -10,7 +10,7 @@ import AddTodoModal from "@/app/(components)/dashboardCompo/addTodoModal";
 export default function Dashboard({params}:any){
 
     useEffect(()=>{
-        //TODO check login session
+        //TODO check login session  
         
     },[])
     //TODO Logout button

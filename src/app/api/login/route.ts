@@ -2,7 +2,7 @@ import { NextResponse,NextRequest } from "next/server";
 import { auth } from "../firebase/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import jwt, {Secret} from 'jsonwebtoken';
-import { getDocWithUid } from '@/utils/firebaseConfig';
+import { getUserDocWithUid } from '@/utils/firebaseConfig';
 
 const EXPIRES_IN_SECONDS:number=10;
 const SECRET_KEY:Secret = process.env.TOKEN_SECRET_KEY as string;
@@ -18,7 +18,7 @@ export async function POST(req:NextRequest){
         const response=NextResponse.json({"message":"Login success"
                                         ,status:200});
 
-        const userName= await getDocWithUid(userCred.uid);
+        const userName= await getUserDocWithUid(userCred.uid);
         const token=await jwt.sign({uid:userCred.uid,
                                     username:userName
         },SECRET_KEY);

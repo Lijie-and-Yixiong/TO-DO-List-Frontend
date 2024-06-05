@@ -3,7 +3,6 @@
 import Navbar from "@/app/(components)/navbar";
 import LoginForm from "@/app/(components)/loginForm";
 import { FormEvent, useEffect, useState } from "react";
-import { UserBasicInfo } from "@/app/api/firebase/userBasicInfo";
 
 
 type backendRes={
@@ -23,7 +22,7 @@ export default function Login(){
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>){
         e.preventDefault();
-        const data:UserBasicInfo={
+        const data={
             email:email,
             userName:userName,
             password:password
@@ -48,7 +47,7 @@ export default function Login(){
     }
     async function handleLogout() {
         try{
-            const response=await fetch('/api/logout',{
+            const response=await fetch('/api/todolists',{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json",

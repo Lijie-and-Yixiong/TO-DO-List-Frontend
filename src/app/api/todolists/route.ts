@@ -1,4 +1,6 @@
 import { NextResponse,NextRequest } from "next/server";
+import jwt, { Secret } from 'jsonwebtoken';
+import { addTodoItem } from "@/utils/firebaseConfig";
 
 export type TodoItem={
     title:string;
@@ -6,6 +8,14 @@ export type TodoItem={
     content:string;
     date:string;
 }
+
+interface CookiePayload{
+    uid: string,
+    username: string,
+    iat: number
+}
+
+const SECRET_KEY = process.env.TOKEN_SECRET_KEY as string;
 
 export async function GET(){
     const response:TodoItem[]=[
@@ -18,9 +28,24 @@ export async function GET(){
 
 
 export async function POST(req:NextRequest){
-    const data=await req.json();
+    const receivedData=await req.json();
     console.log("Post received");
-    console.log(JSON.stringify(data));
+    console.log(JSON.stringify(receivedData));
+    const sessionToken= req.cookies.get('session')?.value||'';
+    try{
+        const payload=jwt.verify(sessionToken,SECRET_KEY) as jwt.JwtPayload;
+        const data={
+            ...receivedData,
+            user_id:payload.uid,
+        }
+        console.log(data);
+        addTodoItem(data);
+    }catch(err){
+        console.log("Api Err Add todo "+ err);
+    }
+
+
+
     // fetch('http://localhost:8080/api/v1/student',{
     //     method:'POST',
     //     headers:{

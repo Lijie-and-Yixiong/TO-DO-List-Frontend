@@ -1,7 +1,5 @@
 import { NextResponse,NextRequest } from 'next/server';
-import jwt, {Secret} from 'jsonwebtoken';
-import {  jwtVerify, importJWK } from 'jose';
-import { getDocWithUid } from './utils/firebaseConfig';
+import {  jwtVerify } from 'jose';
 
 interface Payload{
     uid:string,
@@ -12,6 +10,7 @@ const secret = new TextEncoder().encode(process.env.TOKEN_SECRET_KEY);
 export async function middleware(request: NextRequest) {
     const path=request.nextUrl.pathname;
     // console.log(path.split('/'));
+    //TODO if there is no session, redirect to public path
     const isPublicPath=path==='/login'||path==='/signup'||path==='/main';
     const sessionToken= request.cookies.get('session')?.value||'';
     let currUser:string="";
@@ -19,7 +18,7 @@ export async function middleware(request: NextRequest) {
         const payload=(await jwtVerify(sessionToken,secret)).payload;
         currUser=payload.username as string;
     }catch(err){
-        console.log(err);
+        console.log("jwt +"+err);
     }
     // if(sessionToken){
         if(path.startsWith('/dashboard')){

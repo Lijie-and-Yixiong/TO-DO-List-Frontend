@@ -11,6 +11,7 @@ export default function AddTodoModal(){
     async function handleAddTodoSubmit(e:FormEvent<HTMLFormElement>){
         closeModal();
         e.preventDefault();
+        const createdDate=formatDate(new Date().toLocaleDateString());
         //TODO check due date is passed or not
         try{
             const response=fetch('/api/todolists',{
@@ -21,15 +22,31 @@ export default function AddTodoModal(){
                 body:JSON.stringify({
                     "title":title,
                     "descriptions":descriptions,
+                    "created_date":createdDate,
                     "due_date":dueDate,
                 })
             })
+
+            // todoFormReset();
         }catch(err){
             console.log(err);
         }
 
+        
     }
 
+    function formatDate(localTime:string):string{
+        const month=localTime.split('/')[0];
+        const day=localTime.split('/')[1];
+        const year=localTime.split('/')[2];
+        return `${year}-${month}-${day}`
+    }
+
+    function todoFormReset() {
+        setTitle('');
+        setDescriptions('');
+        setDueDate('');
+    }
     function closeModal(){
         if(modalRef.current){
             modalRef.current.close();
@@ -53,6 +70,7 @@ export default function AddTodoModal(){
                                                                             dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                                                                             dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                                             placeholder="Title for your thing"
+                                                                            required
                                 />
                             </div>
                             <div>
@@ -79,3 +97,4 @@ export default function AddTodoModal(){
     )
 
 }
+
