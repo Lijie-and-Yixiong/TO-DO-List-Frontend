@@ -1,7 +1,7 @@
 'use client';
 
-import Navbar from "@/components/navbar";
-import LoginForm from "@/components/loginForm";
+import Navbar from "@/app/(components)/navbar";
+import LoginForm from "@/app/(components)/loginForm";
 import { FormEvent, useEffect, useState } from "react";
 import { UserBasicInfo } from "@/app/api/firebase/userBasicInfo";
 
@@ -76,7 +76,7 @@ export default function Login(){
                             setEmail={setEmail} setUserName={setUserName} setPassword={setPassword}/>
                         <div className="flex justify-evenly mt-5">
                             <button className="btn btn-active btn-ghost hover:bg-slate-500 hover:text-stone-300">Login</button>
-                            <button onClick={handleLogout} className="btn btn-active btn-ghost hover:bg-slate-500 text-center">Need help</button>
+                            <button onClick={handleLogout} className="btn btn-active btn-ghost hover:bg-slate-500 text-center">Need help ?</button>
 
                         </div>
                     </form>

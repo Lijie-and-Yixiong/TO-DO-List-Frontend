@@ -1,10 +1,9 @@
 'use client';
 
-import Navbar from "@/components/navbar";
-import SignupForm from "@/components/signupForm";
+import Navbar from "@/app/(components)/navbar";
+import SignupForm from "@/app/(components)/signupForm";
 import { FormEvent, useEffect, useState } from "react";
 import { UserBasicInfo } from "@/app/api/firebase/userBasicInfo";
-import { getSessionCookie } from "@/utils/jsCookieConfig";
 
 export default function Signup(){
     const [email,setEmail]=useState<string>('');
@@ -16,9 +15,7 @@ export default function Signup(){
 
     const [isLogin,setIsLogin]=useState(false);
     useEffect(()=>{
-        if(getSessionCookie()!=undefined){
-            setIsLogin(true)
-        }
+
     },[]);
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>){

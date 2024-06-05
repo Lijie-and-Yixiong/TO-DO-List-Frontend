@@ -1,13 +1,14 @@
 'use client';
-import Navbar from "@/components/navbar";
-import TodoCard from "@/components/todoCard";
+import Navbar from "@/app/(components)/navbar";
+import TodoCard from "@/app/(components)/todoCard";
 
 import { useRouter } from "next/navigation";
 import { useState,useEffect } from "react";
 import { TodoItem } from "@/app/api/todolists/route";
-import AddTodoModal from "@/components/dashboardCompo/addTodoModal";
+import AddTodoModal from "@/app/(components)/dashboardCompo/addTodoModal";
 
 export default function Dashboard({params}:any){
+
     useEffect(()=>{
         //TODO check login session
         
@@ -33,14 +34,13 @@ export default function Dashboard({params}:any){
             fetchData(); 
     },[])
 
-    function handleAddTodo(): void {
+    function handleShowAddTodoModal(): void {
         if (document) {
             (document.getElementById('my_modal_4') as HTMLFormElement).showModal();
         }
-        // TODO POST card data
     }
 
-    function handleClick() {
+    function handleTodoFolding() {
         setIsShowing((prev:boolean)=>!prev);
     }
 
@@ -48,8 +48,8 @@ export default function Dashboard({params}:any){
         <div className="">
             <Navbar/>
             <h1>{params.id}</h1>
-            <div className="bg-primary text-primary-content flex ">
-                <button className="btn btn-ghost text-xl" onClick={handleClick}>Todo List </button>
+            <div className="bg-primary text-primary-content flex "> 
+                <button className="btn btn-ghost text-xl" onClick={handleTodoFolding}>Todo List </button>
                 {isShowing?(<p>-</p>):(<p>+</p>)}
             </div>
             {isShowing&&
@@ -60,7 +60,7 @@ export default function Dashboard({params}:any){
                             <TodoCard key={index} todoItem={item}/>
                         )}
                         <div className="flex justify-center items-center bg-slate-800 w-96">
-                            <button onClick={handleAddTodo} className="hover:bg-gray-200 
+                            <button onClick={handleShowAddTodoModal} className="hover:bg-gray-200 
                                                 border-double border-4 border-stone-500 
                                                 bg-gray-100 shadow-lg rounded-lg w-40 h-40">
                                 +

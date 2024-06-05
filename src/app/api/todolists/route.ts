@@ -21,13 +21,13 @@ export async function POST(req:NextRequest){
     const data=await req.json();
     console.log("Post received");
     console.log(JSON.stringify(data));
-    fetch('http://localhost:8080/api/v1/student',{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-        },
-        body:JSON.stringify(data),
-    }).catch(error=>console.log(error));
+    // fetch('http://localhost:8080/api/v1/student',{
+    //     method:'POST',
+    //     headers:{
+    //         'Content-Type':'application/json',
+    //     },
+    //     body:JSON.stringify(data),
+    // }).catch(error=>console.log(error));
     return NextResponse.json({"message":"Student added",status:200});
 }
 
