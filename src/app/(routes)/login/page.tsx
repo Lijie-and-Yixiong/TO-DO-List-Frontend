@@ -3,18 +3,14 @@
 import Navbar from "@/app/(components)/navbar";
 import LoginForm from "@/app/(components)/loginForm";
 import { FormEvent, useEffect, useState } from "react";
-
-
-type backendRes={
-    "message":string,
-    "status":string
-}
+import {useRouter} from "next/navigation";
 
 export default function Login(){
     const [email,setEmail]=useState<string>('');
     const [userName,setUserName]=useState<string>('');
     const [password,setPassword]=useState<string>('');
     const [isLogin,setIsLogin]=useState(false);
+    const router=useRouter();
 
     useEffect(()=>{
 
@@ -35,9 +31,8 @@ export default function Login(){
                 },
                 body:JSON.stringify(data)
             });
-            
+            router.push('/main'); //TODO get user name from backend
             const responseJSON=await response.json();
-            const accessToken:string=await responseJSON.accessToken;
         }catch(err){
             console.log(err);
         }
@@ -54,9 +49,12 @@ export default function Login(){
                 },
                 body:JSON.stringify({})
             });
+            if(response.status==200){
+                
+            }
 
         }catch(err){
-            console.log(err);
+            console.log("Login error "+err);
         }
     }
 

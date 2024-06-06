@@ -1,30 +1,27 @@
 import { NextResponse,NextRequest } from "next/server";
 import { auth } from "../firebase/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import jwt, {Secret} from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { getUserDocWithUid } from '@/utils/firebaseConfig';
+import { SECRET_KEY } from "@/utils/modal";
+import { setSessionCookieWithResponse } from "@/utils/nextCookieConfig";
 
-const EXPIRES_IN_SECONDS:number=10;
-const SECRET_KEY:Secret = process.env.TOKEN_SECRET_KEY as string;
 export async function POST(req:NextRequest){
     const data=await req.json();
     console.log(JSON.stringify(data));
     let accessToken:string="";
     try{
-        const backendRes=await signInWithEmailAndPassword(auth,data.email,data.password);
-        const userCred:any=backendRes.user
+        const fireBaseRes=await signInWithEmailAndPassword(auth,data.email,data.password);
+        const userCred:any=fireBaseRes.user
         accessToken=userCred.toJSON().stsTokenManager.accessToken;
-        
-        const response=NextResponse.json({"message":"Login success"
+        let response:NextResponse=NextResponse.json({"message":"Login success"
                                         ,status:200});
 
         const userName= await getUserDocWithUid(userCred.uid);
         const token=await jwt.sign({uid:userCred.uid,
                                     username:userName
         },SECRET_KEY);
-        const expireTime=new Date(new Date().getTime()+EXPIRES_IN_SECONDS*1000); //create expire date time
-        response.cookies.set("session",token,{httpOnly:true,expires:expireTime}); //set cookie with jwt token
-        return response;
+        return setSessionCookieWithResponse(token,response);
     }catch(err:any){
         console.log(err.message);
         return NextResponse.json({"message":"login failed"});

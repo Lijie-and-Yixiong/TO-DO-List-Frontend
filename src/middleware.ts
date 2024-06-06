@@ -9,8 +9,6 @@ interface Payload{
 const secret = new TextEncoder().encode(process.env.TOKEN_SECRET_KEY);
 export async function middleware(request: NextRequest) {
     const path=request.nextUrl.pathname;
-    // console.log(path.split('/'));
-    //TODO if there is no session, redirect to public path
     const isPublicPath=path==='/login'||path==='/signup'||path==='/main';
     const sessionToken= request.cookies.get('session')?.value||'';
     let currUser:string="";
@@ -18,15 +16,11 @@ export async function middleware(request: NextRequest) {
         const payload=(await jwtVerify(sessionToken,secret)).payload;
         currUser=payload.username as string;
     }catch(err){
-        console.log("jwt +"+err);
+        console.log("jwt verify err "+err);
     }
-    // if(sessionToken){
-        if(path.startsWith('/dashboard')){
-            console.log("start with dashboard");
-            const userNameInPath=path.split('/')[1];
-            console.log(userNameInPath);
-        }
-    // }
+    if(path.startsWith('/dashboard')){
+        const userNameInPath=path.split('/')[1];
+    }
     if(isPublicPath&&sessionToken){
         return NextResponse.redirect(new URL(`/dashboard/${currUser}`,request.nextUrl));
     }

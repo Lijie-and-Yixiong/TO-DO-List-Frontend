@@ -3,36 +3,46 @@ import Navbar from "@/app/(components)/navbar";
 import TodoCard from "@/app/(components)/dashboardCompo/todoCard";
 
 import { useRouter } from "next/navigation";
-import { useState,useEffect } from "react";
-import { TodoItem } from "@/app/api/todolists/route";
+import { useState,useEffect, useRef } from "react";
 import AddTodoModal from "@/app/(components)/dashboardCompo/addTodoModal";
+import { TodoItem } from "@/utils/modal";
 
 export default function Dashboard({params}:any){
 
     useEffect(()=>{
+        async function checkLoginSession(){
+            const fetchedData=await fetch('/api/check').then(res=>res.json());
+        }
         //TODO check login session  
+        checkLoginSession();
         
     },[])
     //TODO Logout button
     const router=useRouter();
-    // router.push('/main');
+    const isLogin=useRef(false);
     const [todoItems,setTodoItems]=useState<TodoItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-
     const [isShowing,setIsShowing] =useState(true);
     useEffect(()=>{
         const fetchData = async () => {
                 try {
-                const fetchedData = await fetch('/api/todolists')
-                    .then(response=>response.json());
-                setTodoItems(fetchedData.data);
-                setIsLoading(false);
+                    const fetchedData = await fetch('/api/todolist')
+                        .then(response=>response.json());
+                    if(fetchedData.data==undefined){ //TODO change the condition
+                    }
+                    else{
+                        setTodoItems(fetchedData.data);
+                        isLogin.current=true;
+                    }
+                    setIsLoading(false);
                 } catch (error) {
                 console.error('Error fetching data:', error);
                 }
             };
             fetchData(); 
-    },[])
+            if(!isLogin.current)
+                router.push('/main');
+    },[router])
 
     function handleShowAddTodoModal(): void {
         if (document) {

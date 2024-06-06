@@ -1,5 +1,5 @@
 import ButtonList from "./buttonList";
-import { TodoItem } from "@/app/api/todolists/route";
+import { TodoItem } from "@/app/api/todolist/route";
 
 type TodoCardProps = {
     todoItem: TodoItem;

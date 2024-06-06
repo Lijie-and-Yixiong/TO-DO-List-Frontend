@@ -4,14 +4,7 @@ import { collection, getFirestore, onSnapshot,getDocs, doc, getDoc,
         addDoc,deleteDoc,
         query, where, limit} from "firebase/firestore";
 import { initialize } from "next/dist/server/lib/render-server";
-
-interface TodoItem{
-    user_id:string,
-    title:string,
-    descriptions:string,
-    create_date:string,
-    due_date:string
-}
+import { TodoItem } from "./modal";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBGYUPFMSA-Y96MFI6Q2AZxQxk-FQuWxLk",
@@ -30,19 +23,6 @@ const todoCollectionRef=collection(db,TODO_COLLECTION_NAME);
 const userInfoCollectionRef=collection(db,USER_COLLECTION_NAME);
 const auth=getAuth();
 
-
-const getAllData=()=>{ //get all todos 
-    onSnapshot(userInfoCollectionRef,(snapshot)=>{
-        let todos:any[]=[];
-        snapshot.docs.forEach((doc)=>{
-            todos.push({
-                id:doc.id,
-                ...doc.data()
-            })
-        })
-        console.log(todos);
-    })
-}
 
 const getUserDocWithUid=async (uid:string)=>{
     try{
@@ -90,4 +70,4 @@ const deleteTodoItem=async(uid:string)=>{
 
 export {db,todoCollectionRef,auth,firebaseConfig,
         addTodoItem,deleteDoc,
-        getUserDocWithUid,getAllData};
+        getUserDocWithUid,getTodoDocsWithUserId};

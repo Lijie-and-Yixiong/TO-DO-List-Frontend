@@ -1,33 +1,27 @@
 import { NextResponse,NextRequest } from "next/server";
-import jwt, { Secret } from 'jsonwebtoken';
-import { addTodoItem } from "@/utils/firebaseConfig";
+import jwt from 'jsonwebtoken';
+import { addTodoItem, getTodoDocsWithUserId, getUserDocWithUid } from "@/utils/firebaseConfig";
+import { getCookiePayload, getSessionCookie } from "@/utils/nextCookieConfig";
+import { CookiePayload } from "@/utils/modal";
 
-export type TodoItem={
-    title:string;
-    subTitle:string|null;
-    content:string;
-    date:string;
-}
 
-interface CookiePayload{
-    uid: string,
-    username: string,
-    iat: number
-}
 
 const SECRET_KEY = process.env.TOKEN_SECRET_KEY as string;
 
 export async function GET(){
-    const response:TodoItem[]=[
-        // {title:"first" ,subTitle:"first subTitle" ,content:"first content" ,date:'1990-05-15T00:00:00Z' },
-        // {title:"first" ,subTitle:"first subTitle" ,content:"first content" ,date:'1990-05-15T00:00:00Z' },
-
-    ]
+    //TODO get user id from session;
+    const cookiePayload=getCookiePayload() as CookiePayload;
+    if(cookiePayload==undefined){
+        return NextResponse.json({"message":"No session cookie founded",status:401})
+    }
+    const userId=cookiePayload.uid;
+    const response=await getTodoDocsWithUserId(userId);
+    console.log(response);
     return NextResponse.json({"data":response,"message":"todolist retrieved",status:200});
 } 
 
 
-export async function POST(req:NextRequest){
+export async function POST(req:NextRequest){ //add new todo
     const receivedData=await req.json();
     console.log("Post received");
     console.log(JSON.stringify(receivedData));
@@ -40,20 +34,11 @@ export async function POST(req:NextRequest){
         }
         console.log(data);
         addTodoItem(data);
+        return NextResponse.json({"message":"Success to add todo",status:200});
     }catch(err){
         console.log("Api Err Add todo "+ err);
+        return NextResponse.json({"message":"Fail to add todo",status:500});
     }
-
-
-
-    // fetch('http://localhost:8080/api/v1/student',{
-    //     method:'POST',
-    //     headers:{
-    //         'Content-Type':'application/json',
-    //     },
-    //     body:JSON.stringify(data),
-    // }).catch(error=>console.log(error));
-    return NextResponse.json({"message":"Student added",status:200});
 }
 
 export async function PUT(req:NextRequest){

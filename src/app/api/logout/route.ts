@@ -10,7 +10,6 @@ export async function POST(req:NextRequest){
         signOut(auth);
         clearSessionCookie('session');
         const response=NextResponse.json({"message":"Log out",status:200});
-        // response.cookies.set("session",'',{maxAge:0});
         return response;
     }catch(err){
         console.log(err);
