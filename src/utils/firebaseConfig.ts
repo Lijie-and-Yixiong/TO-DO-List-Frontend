@@ -4,7 +4,7 @@ import { collection, getFirestore, onSnapshot,getDocs, doc, getDoc,
         addDoc,deleteDoc,
         query, where, limit} from "firebase/firestore";
 import { initialize } from "next/dist/server/lib/render-server";
-import { TodoItem } from "./modal";
+import { TodoItem } from "./types";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBGYUPFMSA-Y96MFI6Q2AZxQxk-FQuWxLk",
@@ -34,7 +34,7 @@ const getUserDocWithUid=async (uid:string)=>{
             return snapshot.docs[0].data().username;
         }
     }catch(err){
-        console.log(err);
+        console.log("Get user Doc with uid "+err);
     }
 }
 
@@ -44,7 +44,11 @@ const getTodoDocsWithUserId=async(uid:string)=>{
                                 where('user_id','==',uid))
         const snapshot=await getDocs(todoQuery);
         if(!snapshot.empty){
-            return snapshot.docs;
+            const todos=snapshot.docs.map((item)=>({
+                doc_uid:item.id,
+                ...item.data()
+            }))
+            return todos;
         }
     }catch(err){
         console.log("Get todo docs with user_id "+err);
@@ -69,5 +73,6 @@ const deleteTodoItem=async(uid:string)=>{
 }
 
 export {db,todoCollectionRef,auth,firebaseConfig,
-        addTodoItem,deleteDoc,
+        addTodoItem,deleteTodoItem,
+        
         getUserDocWithUid,getTodoDocsWithUserId};

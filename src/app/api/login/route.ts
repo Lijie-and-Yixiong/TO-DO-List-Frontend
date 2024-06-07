@@ -3,7 +3,7 @@ import { auth } from "../firebase/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import jwt from 'jsonwebtoken';
 import { getUserDocWithUid } from '@/utils/firebaseConfig';
-import { SECRET_KEY } from "@/utils/modal";
+import { SECRET_KEY } from "@/utils/types";
 import { setSessionCookieWithResponse } from "@/utils/nextCookieConfig";
 
 export async function POST(req:NextRequest){

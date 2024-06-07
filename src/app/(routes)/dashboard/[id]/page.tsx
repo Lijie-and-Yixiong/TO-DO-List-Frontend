@@ -1,22 +1,13 @@
 'use client';
 import Navbar from "@/app/(components)/navbar";
-import TodoCard from "@/app/(components)/dashboardCompo/todoCard";
-
 import { useRouter } from "next/navigation";
 import { useState,useEffect, useRef } from "react";
-import AddTodoModal from "@/app/(components)/dashboardCompo/addTodoModal";
-import { TodoItem } from "@/utils/modal";
+
+import { TodoItem } from "@/utils/types";
+import TodoCard from "@/app/(components)/dashboardCompo/todoCard/todoCardComponent";
+import AddTodoModal from "@/app/(components)/dashboardCompo/addTodoModal/addTodoModalComponent";
 
 export default function Dashboard({params}:any){
-
-    useEffect(()=>{
-        async function checkLoginSession(){
-            const fetchedData=await fetch('/api/check').then(res=>res.json());
-        }
-        //TODO check login session  
-        checkLoginSession();
-        
-    },[])
     //TODO Logout button
     const router=useRouter();
     const isLogin=useRef(false);
@@ -46,7 +37,7 @@ export default function Dashboard({params}:any){
 
     function handleShowAddTodoModal(): void {
         if (document) {
-            (document.getElementById('my_modal_4') as HTMLFormElement).showModal();
+            (document.getElementById('add_todo_modal') as HTMLFormElement).showModal();
         }
     }
 
@@ -62,7 +53,7 @@ export default function Dashboard({params}:any){
                 <button className="btn btn-ghost text-xl" onClick={handleTodoFolding}>Todo List </button>
                 {isShowing?(<p>-</p>):(<p>+</p>)}
             </div>
-            {isShowing&&
+            {isShowing&& //Folding todo cards 
             (<div className="flex flex-wrap gap-4 justify-items-start mx-10 mb-5 mt-3">
                 {isLoading?(<h1>Loading...</h1>):(
                     <>
@@ -82,11 +73,13 @@ export default function Dashboard({params}:any){
             </div>)}
 
 
+
+
+
             <div className="bg-primary text-primary-content my-2">
                 <button className="btn btn-ghost text-xl"> Completed </button>
             </div>
-            {/* TODO add compleeted card, and mark as different color */}
-
+            {/* TODO add completed card, and mark as different color */}
         </div>
     )
 }

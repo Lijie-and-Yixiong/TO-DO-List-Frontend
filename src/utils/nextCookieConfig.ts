@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { EXPIRES_IN_SECONDS, SECRET_KEY } from "./modal";
+import { EXPIRES_IN_SECONDS, SECRET_KEY } from "./types";
 import jwt from 'jsonwebtoken';
 
 export const setSessionCookieWithResponse = (token: string,response:NextResponse):NextResponse => {

@@ -1,8 +1,8 @@
 import { NextResponse,NextRequest } from "next/server";
 import jwt from 'jsonwebtoken';
-import { addTodoItem, getTodoDocsWithUserId, getUserDocWithUid } from "@/utils/firebaseConfig";
+import { addTodoItem, deleteTodoItem, getTodoDocsWithUserId, getUserDocWithUid } from "@/utils/firebaseConfig";
 import { getCookiePayload, getSessionCookie } from "@/utils/nextCookieConfig";
-import { CookiePayload } from "@/utils/modal";
+import { CookiePayload, TodoItem } from "@/utils/types";
 
 
 
@@ -16,6 +16,7 @@ export async function GET(){
     }
     const userId=cookiePayload.uid;
     const response=await getTodoDocsWithUserId(userId);
+
     console.log(response);
     return NextResponse.json({"data":response,"message":"todolist retrieved",status:200});
 } 
@@ -55,14 +56,15 @@ export async function PUT(req:NextRequest){
 }
 
 export async function DELETE(req:NextRequest){
-    const data=await req.json();
-    fetch('http://localhost:8080/api/v1/student',{
-        method:'DELETE',
-        headers:{
-            'Content-Type':'application/json',
-        },
-        body:JSON.stringify(data),
-    }).catch(error=>console.log(error));
-
-    return NextResponse.json({"message":"Student deleted",status:200});
+    const data:TodoItem=await req.json();
+    console.log("Delete todo request received");
+    console.log(data);
+    if(data.doc_uid!=undefined){
+        deleteTodoItem(data.doc_uid);
+        return NextResponse.json({"message":"Todo deleted",status:200});
+    }
+    else{
+        console.log("Doc uid undefined when delete");
+        return NextResponse.json({"message":"Todo delete failed",status:500});
+    }
 }

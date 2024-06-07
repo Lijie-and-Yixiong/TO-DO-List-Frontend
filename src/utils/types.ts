@@ -4,7 +4,7 @@ interface TodoItem{
     title:string,
     create_date:string,
     descriptions?:string,
-    doc_uid?:string,
+    doc_uid?:string, //Doc uid created by firebase automatically
     due_date?:string,
 }
 

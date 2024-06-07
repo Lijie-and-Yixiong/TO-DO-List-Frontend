@@ -42,7 +42,7 @@ export default function Login(){
     }
     async function handleLogout() {
         try{
-            const response=await fetch('/api/todolists',{
+            const response=await fetch('/api/todolist',{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json",

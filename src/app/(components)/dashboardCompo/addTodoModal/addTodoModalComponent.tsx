@@ -2,7 +2,6 @@ import { FormEvent } from "react";
 import { useState,useRef } from 'react';
 
 
-
 export default function AddTodoModal(){
     const [title, setTitle] = useState('');
     const [descriptions, setDescriptions] = useState('');
@@ -14,7 +13,7 @@ export default function AddTodoModal(){
         const createdDate=formatDate(new Date().toLocaleDateString());
         //TODO check due date is passed or not
         try{
-            const response=fetch('/api/todolists',{
+            const response=fetch('/api/todolist',{
                 method:'POST',
                 headers:{
                     'Content-type':'application/json',
@@ -26,8 +25,8 @@ export default function AddTodoModal(){
                     "due_date":dueDate,
                 })
             })
-
-            // todoFormReset();
+            //TODO reload dashboard after added
+            todoFormReset();
         }catch(err){
             console.log(err);
         }
@@ -54,7 +53,7 @@ export default function AddTodoModal(){
     }
     return(
         <div>
-            <dialog ref={modalRef} id="my_modal_4" className="modal">
+            <dialog ref={modalRef} id="add_todo_modal" className="modal">
                     <div className="modal-box w-11/12 max-w-5xl h-5/6">
                         <div className="flex">
                             <h3 className="font-bold text-lg">Add Todo!</h3>
