@@ -3,12 +3,6 @@ import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 import { initialize } from "next/dist/server/lib/render-server";
 
-interface TodoItem{
-    describe:string,
-    subtitle:string,
-    title:string,
-}
-
 const firebaseConfig = {
     apiKey: "AIzaSyBGYUPFMSA-Y96MFI6Q2AZxQxk-FQuWxLk",
     authDomain: "todowebsite-c93c2.firebaseapp.com",

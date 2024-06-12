@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import jwt from 'jsonwebtoken';
 import { getUserDocWithUid } from '@/utils/firebaseConfig';
 import { SECRET_KEY } from "@/utils/types";
-import { setSessionCookieWithResponse } from "@/utils/nextCookieConfig";
+import { setSessionCookieWithResponse } from "@/utils/cookieConfig";
 
 export async function POST(req:NextRequest){
     const data=await req.json();
@@ -19,12 +19,12 @@ export async function POST(req:NextRequest){
 
         const userName= await getUserDocWithUid(userCred.uid);
         const token=await jwt.sign({uid:userCred.uid,
-                                    username:userName
+                                    userName:userName
         },SECRET_KEY);
         return setSessionCookieWithResponse(token,response);
     }catch(err:any){
         console.log(err.message);
-        return NextResponse.json({"message":"login failed"});
+        return NextResponse.json({"message":"Login failed",status:400});
     }
 }
 

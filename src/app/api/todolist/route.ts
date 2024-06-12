@@ -1,7 +1,7 @@
 import { NextResponse,NextRequest } from "next/server";
 import jwt from 'jsonwebtoken';
-import { addTodoItem, deleteTodoItem, getTodoDocsWithUserId, getUserDocWithUid } from "@/utils/firebaseConfig";
-import { getCookiePayload, getSessionCookie } from "@/utils/nextCookieConfig";
+import { addTodoItem, deleteTodoItem, getTodoDocsWithUserId, getUserDocWithUid, updateTodoItem } from "@/utils/firebaseConfig";
+import { getCookiePayload, getSessionCookie } from "@/utils/cookieConfig";
 import { CookiePayload, TodoItem } from "@/utils/types";
 
 
@@ -16,8 +16,6 @@ export async function GET(){
     }
     const userId=cookiePayload.uid;
     const response=await getTodoDocsWithUserId(userId);
-
-    console.log(response);
     return NextResponse.json({"data":response,"message":"todolist retrieved",status:200});
 } 
 
@@ -44,15 +42,17 @@ export async function POST(req:NextRequest){ //add new todo
 
 export async function PUT(req:NextRequest){
     const data=await req.json();
-    fetch('http://localhost:8080/api/v1/student',{
-        method:'PUT',
-        headers:{
-            'Content-Type':'application/json',
-        },
-        body:JSON.stringify(data),
-    }).catch(error=>console.log(error));
+    console.log("PUT received");
+    console.log(JSON.stringify(data));
+    try{
+        updateTodoItem(data.doc_uid,data);
+        return NextResponse.json({"message":"Todo updated",status:200});
 
-    return NextResponse.json({"message":"Student updated",status:200});
+    }catch(err){
+        console.log("PUT err "+err);
+        return NextResponse.json({"message":"Todo update failed",status:500});
+
+    }
 }
 
 export async function DELETE(req:NextRequest){

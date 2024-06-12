@@ -1,10 +1,7 @@
 import { NextResponse,NextRequest } from 'next/server';
 import {  jwtVerify } from 'jose';
 
-interface Payload{
-    uid:string,
-    // username:string,
-}
+
 
 const secret = new TextEncoder().encode(process.env.TOKEN_SECRET_KEY);
 export async function middleware(request: NextRequest) {
@@ -14,7 +11,7 @@ export async function middleware(request: NextRequest) {
     let currUser:string="";
     try{
         const payload=(await jwtVerify(sessionToken,secret)).payload;
-        currUser=payload.username as string;
+        currUser=payload.userName as string;
     }catch(err){
         console.log("jwt verify err "+err);
     }

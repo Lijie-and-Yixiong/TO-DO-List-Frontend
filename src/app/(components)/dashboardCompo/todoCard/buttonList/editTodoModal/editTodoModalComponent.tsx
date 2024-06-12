@@ -16,7 +16,6 @@ export default function EditTodoModal({todoItem}:TodoCardProps){
 
     async function handleEditTodoSubmit(e:FormEvent<HTMLFormElement>){
         e.preventDefault();
-        //TODO check due date is passed or not
         try{
             const response=fetch('/api/todolist',{
                 method:'PUT',
@@ -30,11 +29,11 @@ export default function EditTodoModal({todoItem}:TodoCardProps){
                     "due_date":dueDate,
                     "user_id":todoItem.user_id,
                     "doc_uid":todoItem.doc_uid
-                    
                 })
             })
             todoFormReset();
             closeModal();
+            window.location.reload();
         }catch(err){
             console.log(err);
         }

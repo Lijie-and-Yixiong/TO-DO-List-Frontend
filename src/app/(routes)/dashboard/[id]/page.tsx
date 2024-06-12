@@ -12,6 +12,7 @@ export default function Dashboard({params}:any){
     const router=useRouter();
     const isLogin=useRef(false);
     const [todoItems,setTodoItems]=useState<TodoItem[]>([]);
+    const [completedItems,setCompletedItems]=useState<TodoItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isShowing,setIsShowing] =useState(true);
     useEffect(()=>{
@@ -19,7 +20,9 @@ export default function Dashboard({params}:any){
                 try {
                     const fetchedData = await fetch('/api/todolist')
                         .then(response=>response.json());
-                    if(fetchedData.data==undefined){ //TODO change the condition
+                    if(fetchedData.status!="200"){
+                        //login failed or session expired
+                        //TODO show error page
                     }
                     else{
                         setTodoItems(fetchedData.data);

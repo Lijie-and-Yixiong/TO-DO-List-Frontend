@@ -44,12 +44,6 @@ const getData=()=>{
 
 }
 
-interface TodoItem{
-    describe:string,
-    subtitle:string,
-    title:string,
-}
-
 export async function GET(req:NextRequest){
     if(req.nextUrl.searchParams.has('describe')){ //Do query search in database if search param exist
         let docArr=[];

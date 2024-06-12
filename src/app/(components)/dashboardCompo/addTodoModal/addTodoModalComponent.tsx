@@ -23,6 +23,7 @@ export default function AddTodoModal(){
                     "descriptions":descriptions,
                     "created_date":createdDate,
                     "due_date":dueDate,
+                    "is_completed":false,
                 })
             })
             //TODO reload dashboard after added

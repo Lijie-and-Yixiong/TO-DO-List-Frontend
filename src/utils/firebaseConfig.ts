@@ -1,8 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getAuth,createUserWithEmailAndPassword} from "firebase/auth";
 import { collection, getFirestore, onSnapshot,getDocs, doc, getDoc, 
-        addDoc,deleteDoc,
-        query, where, limit} from "firebase/firestore";
+        addDoc,deleteDoc, updateDoc,
+        query, where, limit,
+        
+    } from "firebase/firestore";
 import { initialize } from "next/dist/server/lib/render-server";
 import { TodoItem } from "./types";
 
@@ -31,7 +33,7 @@ const getUserDocWithUid=async (uid:string)=>{
                                 limit(1)); 
         const snapshot= await getDocs(userQuery);
         if(!snapshot.empty){
-            return snapshot.docs[0].data().username;
+            return snapshot.docs[0].data().username; //TODO change firebase field name
         }
     }catch(err){
         console.log("Get user Doc with uid "+err);
@@ -72,7 +74,15 @@ const deleteTodoItem=async(uid:string)=>{
     }
 }
 
+const updateTodoItem=async(uid:string, data:TodoItem)=>{
+    const docRef=doc(db,TODO_COLLECTION_NAME,uid);
+    try{
+        updateDoc(docRef,{...data});
+    }catch(err){
+        console.log("Update Err "+err);
+    }
+}
+
 export {db,todoCollectionRef,auth,firebaseConfig,
-        addTodoItem,deleteTodoItem,
-        
+        addTodoItem,deleteTodoItem,updateTodoItem,
         getUserDocWithUid,getTodoDocsWithUserId};
