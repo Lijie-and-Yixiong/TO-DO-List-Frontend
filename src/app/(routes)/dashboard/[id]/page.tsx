@@ -16,6 +16,18 @@ export default function Dashboard({params}:any){
     const [isLoading, setIsLoading] = useState(true);
     const [isShowing,setIsShowing] =useState(true);
     useEffect(()=>{
+        const checkLogin=async ()=>{
+            const response=await fetch ('/api/checkSession',{
+                method:'POST',
+                headers:{
+                    "Content-Type":"application/json",
+                },
+                body:JSON.stringify({'userName':params.id})
+            })
+            console.log(response.status);
+            if(response.status!=200) //login session error
+                router.push('/main');
+        }
         const fetchData = async () => {
                 try {
                     const fetchedData = await fetch('/api/todolist')
@@ -33,10 +45,9 @@ export default function Dashboard({params}:any){
                 console.error('Error fetching data:', error);
                 }
             };
+            checkLogin();
             fetchData(); 
-            if(!isLogin.current)
-                router.push('/main');
-    },[router])
+    },[router,params])
 
     function handleShowAddTodoModal(): void {
         if (document) {

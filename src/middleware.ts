@@ -6,7 +6,7 @@ import {  jwtVerify } from 'jose';
 const secret = new TextEncoder().encode(process.env.TOKEN_SECRET_KEY);
 export async function middleware(request: NextRequest) {
     const path=request.nextUrl.pathname;
-    const isPublicPath=path==='/login'||path==='/signup'||path==='/main';
+    const isPublicPath=path==='/login'||path==='/signup';
     const sessionToken= request.cookies.get('session')?.value||'';
     let currUser:string="";
     try{

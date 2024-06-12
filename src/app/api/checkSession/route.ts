@@ -4,11 +4,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req:NextRequest){
     const data=await req.json();
-    console.log(JSON.stringify(data));
-    const pathVar=data.currentUserName;
+    console.log(data);
+    const pathVar=data.userName;
     const cookiePayload=getCookiePayload() as CookiePayload;
-    if(cookiePayload.userName==undefined || cookiePayload.userName!=pathVar){
+
+    console.log(cookiePayload);
+    console.log(cookiePayload.userName);
+    console.log(pathVar);
+    if(cookiePayload==undefined|| cookiePayload?.userName!=pathVar){
         return NextResponse.json({"message":"Login session error",status:401});
     }
-    return NextResponse.json({"message":"Login success",status:200});
+    return NextResponse.json({"message":"Login session OK",status:200});
 }
