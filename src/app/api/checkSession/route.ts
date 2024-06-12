@@ -7,10 +7,6 @@ export async function POST(req:NextRequest){
     console.log(data);
     const pathVar=data.userName;
     const cookiePayload=getCookiePayload() as CookiePayload;
-
-    console.log(cookiePayload);
-    console.log(cookiePayload.userName);
-    console.log(pathVar);
     if(cookiePayload==undefined|| cookiePayload?.userName!=pathVar){
         return NextResponse.json({"message":"Login session error",status:401});
     }

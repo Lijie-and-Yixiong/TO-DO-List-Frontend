@@ -10,7 +10,6 @@ import AddTodoModal from "@/app/(components)/dashboardCompo/addTodoModal/addTodo
 export default function Dashboard({params}:any){
     //TODO Logout button
     const router=useRouter();
-    const isLogin=useRef(false);
     const [todoItems,setTodoItems]=useState<TodoItem[]>([]);
     const [completedItems,setCompletedItems]=useState<TodoItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -32,14 +31,8 @@ export default function Dashboard({params}:any){
                 try {
                     const fetchedData = await fetch('/api/todolist')
                         .then(response=>response.json());
-                    if(fetchedData.status!="200"){
-                        //login failed or session expired
-                        //TODO show error page
-                    }
-                    else{
-                        setTodoItems(fetchedData.data);
-                        isLogin.current=true;
-                    }
+                    console.log(fetchedData);
+                    setTodoItems(fetchedData.data);
                     setIsLoading(false);
                 } catch (error) {
                 console.error('Error fetching data:', error);

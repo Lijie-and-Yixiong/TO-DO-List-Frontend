@@ -22,7 +22,7 @@ export default function ButtonList({todoItem}:TodoCardProps){
         }
     }
     return(
-        <div className="card-actions justify-end mr-5 mb-2 p-2">
+        <div className="justify-end mr-5 mb-2 p-2">
         <button className="hover:bg-gray-200 p-2 rounded-full">
                 <Image
                 src="/add.png"

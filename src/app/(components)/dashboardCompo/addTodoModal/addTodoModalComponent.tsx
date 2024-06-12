@@ -26,8 +26,8 @@ export default function AddTodoModal(){
                     "is_completed":false,
                 })
             })
-            //TODO reload dashboard after added
             todoFormReset();
+            window.location.reload();
         }catch(err){
             console.log(err);
         }

@@ -22,13 +22,14 @@ export default function TodoCard({todoItem}:TodoCardProps){
                     <h2 className="text-xl font-bold truncate">{todoItem.title}</h2>
                     {/* TODO add tooltips for title */}
                     </div>
-                    <div className="card-body items-center text-left p-4 overflow">
-                        <p className="max-h-44 min-h-44 overflow-y-scroll text-ellipsis">We are using cookies for no reason. We 1212are using cookies for no reasonWe are using cookies for no reasonWe are using cookies for 
-                        no reasonWe are using cookies for no reasonWe are using cookies for no reasonWe are using cookies for no reason
-                            no reasonWe are using cookies for no reasonWe are using cookies for no reasonWe are using cookies for no reason</p>
+                    <div className="card-body items-start text-left p-5  ">
+                        {todoItem.descriptions==''?(<>No descriptions left</>):
+                                                        (<p className="max-h-44 min-h-44 overflow-hidden text-ellipsis">{todoItem.descriptions}</p>)}
                     </div>
                 </div>
-                <ButtonList  todoItem={todoItem}/>
+                <div className=" absolute bottom-0 right-0">
+                    <ButtonList todoItem={todoItem}/>
+                </div>
             </div>
     )
 }
