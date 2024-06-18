@@ -13,7 +13,9 @@ export default function Dashboard({params}:any){
     const [todoItems,setTodoItems]=useState<TodoItem[]>([]);
     const [completedItems,setCompletedItems]=useState<TodoItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [isShowing,setIsShowing] =useState(true);
+    const [isShowingTodo,setIsShowingTodo] =useState(true);
+    const [isShowingComplete,setIsShowingComplete] =useState(true);
+
     useEffect(()=>{
         const checkLogin=async ()=>{
             const response=await fetch ('/api/checkSession',{
@@ -32,7 +34,9 @@ export default function Dashboard({params}:any){
                     const fetchedData = await fetch('/api/todolist')
                         .then(response=>response.json());
                     console.log(fetchedData);
-                    setTodoItems(fetchedData.data);
+                    setTodoItems(fetchedData.data.filter((item:TodoItem)=>item.is_completed==false));
+                    setCompletedItems(fetchedData.data.filter((item:TodoItem)=>item.is_completed==true));
+
                     setIsLoading(false);
                 } catch (error) {
                 console.error('Error fetching data:', error);
@@ -49,7 +53,10 @@ export default function Dashboard({params}:any){
     }
 
     function handleTodoFolding() {
-        setIsShowing((prev:boolean)=>!prev);
+        setIsShowingTodo((prev:boolean)=>!prev);
+    }
+    function handleCompleteFolding() {
+        setIsShowingComplete((prev:boolean)=>!prev);
     }
 
     return(
@@ -58,9 +65,9 @@ export default function Dashboard({params}:any){
             <h1>{params.id}</h1>
             <div className="bg-primary text-primary-content flex "> 
                 <button className="btn btn-ghost text-xl" onClick={handleTodoFolding}>Todo List </button>
-                {isShowing?(<p>-</p>):(<p>+</p>)}
+                {isShowingTodo?(<p>-</p>):(<p>+</p>)}
             </div>
-            {isShowing&& //Folding todo cards 
+            {isShowingTodo&& //Folding todo cards 
             (<div className="flex flex-wrap gap-4 justify-items-start mx-10 mb-5 mt-3">
                 {isLoading?(<h1>Loading...</h1>):(
                     <>
@@ -83,10 +90,22 @@ export default function Dashboard({params}:any){
 
 
 
-            <div className="bg-primary text-primary-content my-2">
+            <div className="bg-primary text-primary-content my-2 flex">
                 <button className="btn btn-ghost text-xl"> Completed </button>
+                {isShowingComplete?(<p>-</p>):(<p>+</p>)}
             </div>
-            {/* TODO add completed card, and mark as different color */}
+            {isLoading?(<div>Loading...</div>):(
+                isShowingComplete&&
+                    (<>
+                        {completedItems.map((item:TodoItem,index:number)=>
+                        // TODO set completed Item cards
+                            <TodoCard key={index} todoItem={item}/>
+                        )}
+                    </>)
+            
+            
+            )
+                }
         </div>
     )
 }
