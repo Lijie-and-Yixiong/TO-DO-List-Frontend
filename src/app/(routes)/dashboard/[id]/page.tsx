@@ -62,8 +62,7 @@ export default function Dashboard({params}:any){
     return(
         <div className="">
             <Navbar/>
-            <h1>{params.id}</h1>
-            <div className="bg-primary text-primary-content flex "> 
+            <div className="bg-primary text-primary-content flex"> 
                 <button className="btn btn-ghost text-xl" onClick={handleTodoFolding}>Todo List </button>
                 {isShowingTodo?(<p>-</p>):(<p>+</p>)}
             </div>
@@ -86,24 +85,21 @@ export default function Dashboard({params}:any){
                 )}
             </div>)}
 
-
-
-
-
             <div className="bg-primary text-primary-content my-2 flex">
-                <button className="btn btn-ghost text-xl"> Completed </button>
-                {isShowingComplete?(<p>-</p>):(<p>+</p>)}
+                <button onClick={handleCompleteFolding} className="btn btn-ghost text-xl">
+                    Completed {isShowingComplete ? (<span>-</span>) : (<span>+</span>)}
+                </button>
             </div>
-            {isLoading?(<div>Loading...</div>):(
-                isShowingComplete&&
+            {isShowingComplete&&
+                (<div className="flex flex-wrap gap-4 justify-items-start mx-10 mb-5 mt-3">
+                {isLoading?(<div>Loading...</div>):
                     (<>
                         {completedItems.map((item:TodoItem,index:number)=>
                         // TODO set completed Item cards
                             <TodoCard key={index} todoItem={item}/>
                         )}
-                    </>)
-            
-            
+                    </>)}
+            </div>
             )
                 }
         </div>
