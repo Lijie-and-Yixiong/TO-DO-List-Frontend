@@ -7,6 +7,15 @@ import { TodoItem } from "@/utils/types";
 import TodoCard from "@/app/(components)/dashboardCompo/todoCard/todoCardComponent";
 import AddTodoModal from "@/app/(components)/dashboardCompo/addTodoModal/addTodoModalComponent";
 
+export interface CurrModal{
+    currTitle:string,
+    currDescriptions:string,
+    currDueDate:string,
+    setCurrTitle:React.Dispatch<React.SetStateAction<string>>,
+    setCurrDescriptions:React.Dispatch<React.SetStateAction<string>>,
+    setCurrDueDate:React.Dispatch<React.SetStateAction<string>>
+}
+
 export default function Dashboard({params}:any){
     //TODO Logout button
     const router=useRouter();
@@ -16,6 +25,17 @@ export default function Dashboard({params}:any){
     const [isShowingTodo,setIsShowingTodo] =useState(true);
     const [isShowingComplete,setIsShowingComplete] =useState(true);
 
+    const [currTitle,setCurrTitle]=useState('');
+    const [currDescriptions,setCurrDescriptions]=useState('');
+    const [currDueDate,setCurrDueDate]=useState('');
+    const currModal:CurrModal={
+        currTitle,
+        currDescriptions,
+        currDueDate,
+        setCurrTitle,
+        setCurrDescriptions,
+        setCurrDueDate
+    }
     useEffect(()=>{
         const checkLogin=async ()=>{
             const response=await fetch ('/api/checkSession',{
@@ -71,7 +91,7 @@ export default function Dashboard({params}:any){
                 {isLoading?(<h1>Loading...</h1>):(
                     <>
                         {todoItems.map((item:TodoItem,index:number)=>
-                            <TodoCard key={index} todoItem={item}/>
+                            <TodoCard key={index} todoItem={item} currModal={currModal} />
                         )}
                         <div className="flex justify-center items-center bg-slate-800 w-96">
                             <button onClick={handleShowAddTodoModal} className="hover:bg-gray-200 
@@ -96,7 +116,7 @@ export default function Dashboard({params}:any){
                     (<>
                         {completedItems.map((item:TodoItem,index:number)=>
                         // TODO set completed Item cards
-                            <TodoCard key={index} todoItem={item}/>
+                            <TodoCard key={index} todoItem={item} currModal={currModal}/>
                         )}
                     </>)}
             </div>

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import ButtonList from "./buttonList/btnListComponent";
 import { TodoItem } from "@/utils/types";
+import { CurrModal } from "@/app/(routes)/dashboard/[id]/page";
 export interface TodoCardProps {
-    todoItem: TodoItem
+    todoItem: TodoItem,
+    currModal:CurrModal
 };
-export default function TodoCard({todoItem}:TodoCardProps){
+export default function TodoCard({todoItem,currModal}:TodoCardProps){
     const [isMouseDown,setIsMouseDown] = useState(false);
     function handleCardClick(): void {
         console.log("Card Clicked");
@@ -28,7 +30,7 @@ export default function TodoCard({todoItem}:TodoCardProps){
                     </div>
                 </div>
                 <div className=" absolute bottom-0 right-0">
-                    <ButtonList todoItem={todoItem}/>
+                    <ButtonList todoItem={todoItem} currModal={currModal}/>
                 </div>
             </div>
     )

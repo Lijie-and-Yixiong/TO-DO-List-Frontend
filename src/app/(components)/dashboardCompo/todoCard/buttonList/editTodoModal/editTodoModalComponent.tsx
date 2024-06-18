@@ -1,18 +1,10 @@
-import { FormEvent, useEffect } from "react";
-import { useState,useRef } from 'react';
+import { FormEvent } from "react";
+import { useRef } from 'react';
 import { TodoCardProps } from "../../todoCardComponent";
 
-export default function EditTodoModal({todoItem}:TodoCardProps){
-    const [title, setTitle] = useState('');
-    const [descriptions, setDescriptions] = useState('');
-    const [dueDate, setDueDate] = useState('');
-    const modalRef=useRef<HTMLDialogElement>(null);
+export default function EditTodoModal({todoItem,currModal}:TodoCardProps){
 
-    useEffect(()=>{
-        setTitle(todoItem.title);
-        setDescriptions(todoItem.descriptions||"");
-        setDueDate(todoItem.due_date||"");
-    },[todoItem]);
+    const modalRef=useRef<HTMLDialogElement>(null);
 
     async function handleEditTodoSubmit(e:FormEvent<HTMLFormElement>){
         e.preventDefault();
@@ -23,22 +15,19 @@ export default function EditTodoModal({todoItem}:TodoCardProps){
                     'Content-type':'application/json',
                 },
                 body:JSON.stringify({
-                    "title":title,
-                    "descriptions":descriptions,
+                    "title":currModal.currTitle,
+                    "descriptions":currModal.currDescriptions,
                     "created_date":todoItem.create_date,
-                    "due_date":dueDate,
+                    "due_date":currModal.currDueDate,
                     "user_id":todoItem.user_id,
                     "doc_uid":todoItem.doc_uid
                 })
             })
-            todoFormReset();
             closeModal();
             window.location.reload();
         }catch(err){
             console.log(err);
         }
-
-        
     }
 
     function formatDate(localTime:string):string{
@@ -48,11 +37,7 @@ export default function EditTodoModal({todoItem}:TodoCardProps){
         return `${year}-${month}-${day}`
     }
 
-    function todoFormReset() {
-        setTitle('');
-        setDescriptions('');
-        setDueDate('');
-    }
+
     function closeModal(){
         if(modalRef.current){
             modalRef.current.close();
@@ -69,7 +54,9 @@ export default function EditTodoModal({todoItem}:TodoCardProps){
                         <form onSubmit={handleEditTodoSubmit}>
                             <div className="mb-5">
                                 <label htmlFor="title" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-                                <input type="text" id="title" value={title} onChange={(e)=>setTitle(e.target.value)} className=" shadow-md
+                                <input type="text" id="title" value={currModal.currTitle} 
+                                onChange={(e)=>currModal.setCurrTitle(e.target.value)} 
+                                className=" shadow-md
                                                                             bg-gray-50 border border-gray-300
                                                                             text-gray-900 text-sm rounded-lg focus:ring-blue-500 
                                                                             focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
@@ -81,11 +68,15 @@ export default function EditTodoModal({todoItem}:TodoCardProps){
                             </div>
                             <div>
                                 <label htmlFor="descriptions" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descriptions</label>
-                                <textarea id="descriptions" value={descriptions} onChange={(e)=>setDescriptions(e.target.value)} rows={10} className=" shadow-md block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Details..."></textarea>
+                                <textarea id="descriptions" value={currModal.currDescriptions} 
+                                onChange={(e)=>currModal.setCurrDescriptions(e.target.value)} 
+                                rows={10} className=" shadow-md block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Details..."></textarea>
                             </div>
                             <div>
                                 <label htmlFor="date" className="block mt-2 mb-2 text-sm font-medium text-gray-900 dark:text-white">Due Date</label>
-                                <input type="date" id="date" value={dueDate} onChange={(e)=>setDueDate(e.target.value)} className="shadow-md block p-2 text-gray-900 border border-gray-300 rounded-lg 
+                                <input type="date" id="date" value={currModal.currDueDate} 
+                                onChange={(e)=>currModal.setCurrDueDate(e.target.value)} 
+                                className="shadow-md block p-2 text-gray-900 border border-gray-300 rounded-lg 
                                                                             bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 
                                                                             dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                                                                             dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
