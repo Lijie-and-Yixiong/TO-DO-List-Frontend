@@ -3,6 +3,7 @@ import { firebaseConfig ,auth} from "../firebase/firebaseConfig";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
+//TODO refactor signup
 export async function POST(req:NextRequest){
     initializeApp(firebaseConfig);
     const data=await req.json();
@@ -16,6 +17,7 @@ export async function POST(req:NextRequest){
         return NextResponse.json({"message":"signup failed",status:500});
     }
     //TODO create a user doc in users collection in firebase to match each todos
+    //TODO after create user, login automatically.
     return NextResponse.json({"message":"signup success",status:200});
 }
 

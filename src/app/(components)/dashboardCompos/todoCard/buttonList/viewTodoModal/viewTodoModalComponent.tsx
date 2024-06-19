@@ -4,7 +4,6 @@ import { TodoCardProps } from "../../todoCardComponent";
 export default function ViewTodoModal({todoItem,currModal}:TodoCardProps){
     console.log(todoItem.title);
     const modalRef=useRef<HTMLDialogElement>(null);
-    //TODO fix the bug that only show first item 
     function closeModal(){
         if(modalRef.current){
             modalRef.current.close();

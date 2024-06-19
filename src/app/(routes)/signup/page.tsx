@@ -3,7 +3,7 @@
 import Navbar from "@/app/(components)/navbar";
 import SignupForm from "@/app/(components)/signupForm";
 import { FormEvent, useEffect, useState } from "react";
-import { UserBasicInfo } from "@/utils/modal";
+import { UserBasicInfo } from "@/utils/types";
 export default function Signup(){
     const [email,setEmail]=useState<string>('');
     const [userName,setUserName]=useState<string>('');
@@ -42,6 +42,7 @@ export default function Signup(){
             
 
         //TODO redirect to dashboard
+        //TODO after signup go to a welcome page
     }
 
 

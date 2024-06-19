@@ -31,7 +31,7 @@ export default function Login(){
                 },
                 body:JSON.stringify(data)
             });
-            router.push('/main'); //TODO get user name from backend
+            router.push('/main'); //TODO get user name from backend and redirect to dashboard
             const responseJSON=await response.json();
         }catch(err){
             console.log(err);

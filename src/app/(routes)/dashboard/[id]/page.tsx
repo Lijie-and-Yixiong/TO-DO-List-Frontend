@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState,useEffect, useRef } from "react";
 
 import { TodoItem } from "@/utils/types";
-import TodoCard from "@/app/(components)/dashboardCompo/todoCard/todoCardComponent";
-import AddTodoModal from "@/app/(components)/dashboardCompo/addTodoModal/addTodoModalComponent";
+import TodoCard from "@/app/(components)/dashboardCompos/todoCard/todoCardComponent";
+import AddTodoModal from "@/app/(components)/dashboardCompos/addTodoModal/addTodoModalComponent";
 
 export interface CurrModal{
     currTitle:string,
