@@ -22,6 +22,7 @@ export default function CreateUserCard(){
             },
             body:JSON.stringify(data),
         })
+        console.log(response);
         //TODO check server response
     }
 

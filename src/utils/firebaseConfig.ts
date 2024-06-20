@@ -26,6 +26,16 @@ const userInfoCollectionRef=collection(db,USER_COLLECTION_NAME);
 const auth=getAuth();
 
 
+const userSignup=async(email:string,password:string)=>{
+    try{
+        const firebaseResponse=await createUserWithEmailAndPassword(auth,email,password);
+        return firebaseResponse.user.uid;
+    }catch(err:any){ //TODO firebase error type handle
+        console.log("Signup user err "+err.code);
+        return err.code;
+    }
+}
+
 const getUserDocWithUid=async (uid:string)=>{
     try{
         const userQuery=query(userInfoCollectionRef,
@@ -84,5 +94,6 @@ const updateTodoItem=async(uid:string, data:TodoItem)=>{
 }
 
 export {db,todoCollectionRef,auth,firebaseConfig,
+        userSignup,
         addTodoItem,deleteTodoItem,updateTodoItem,
         getUserDocWithUid,getTodoDocsWithUserId};
