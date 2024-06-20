@@ -1,5 +1,5 @@
 import { NextResponse,NextRequest } from "next/server";
-import { userSignup } from "@/utils/firebaseConfig";
+import { addUserDoc, userSignup } from "@/utils/firebaseConfig";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
@@ -13,9 +13,10 @@ export async function POST(req:NextRequest){
         let message="";
         let statusCode=500;
         if(fireBaseResponse.user!=undefined){
-            //TODO create user doc with username and uid.            
+            addUserDoc(fireBaseResponse.user.uid,data.userName);     
             return NextResponse.json({"message":"User signup success",status:200});
         }
+        console.log(fireBaseResponse);
         switch(fireBaseResponse){ //TODO handle other error code.
             case "auth/weak-password": //TODO handle correct error code.
                 message="Password too weak";

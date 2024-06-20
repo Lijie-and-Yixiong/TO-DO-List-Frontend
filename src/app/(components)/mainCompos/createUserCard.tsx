@@ -34,7 +34,7 @@ export default function CreateUserCard(){
                 <label className="label">
                     <span className="label-text">User name</span>
                 </label>
-                <input type="text" placeholder="User name" 
+                <input type="text" placeholder="Username" 
                     value={userName} onChange={(e)=>setUserName(e.target.value)}  className="input input-bordered" required />
             </div>
             <div className="form-control">

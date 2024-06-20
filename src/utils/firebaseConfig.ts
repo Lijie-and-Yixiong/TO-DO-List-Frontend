@@ -29,7 +29,7 @@ const auth=getAuth();
 const userSignup=async(email:string,password:string)=>{
     try{
         const firebaseResponse=await createUserWithEmailAndPassword(auth,email,password);
-        return firebaseResponse.user.uid;
+        return firebaseResponse;
     }catch(err:any){ //TODO firebase error type handle
         console.log("Signup user err "+err.code);
         return err.code;
@@ -75,6 +75,17 @@ const addTodoItem=async(todoItem:TodoItem)=>{
     }
 }
 
+const addUserDoc=async(userName:string,user_id:string)=>{
+    try{
+        addDoc(userInfoCollectionRef,{
+            "user_id":user_id,
+            "username":userName
+        })
+    }catch(err){
+        console.log("add user err "+err);
+    }
+}
+
 const deleteTodoItem=async(uid:string)=>{
     const docRef=doc(db,TODO_COLLECTION_NAME,uid);
     try{
@@ -94,6 +105,6 @@ const updateTodoItem=async(uid:string, data:TodoItem)=>{
 }
 
 export {db,todoCollectionRef,auth,firebaseConfig,
-        userSignup,
+        userSignup,addUserDoc,
         addTodoItem,deleteTodoItem,updateTodoItem,
         getUserDocWithUid,getTodoDocsWithUserId};
