@@ -20,8 +20,7 @@ export default function DeleteTodoModal({todoItem}:TodoCardProps){
                     "doc_uid":todoItem.doc_uid,
                 })
             })
-            console.log(response);
-            //TODO reload dashboard after delete
+            window.location.reload();
         }catch(err){
             console.log("Delete Err "+err);
         }

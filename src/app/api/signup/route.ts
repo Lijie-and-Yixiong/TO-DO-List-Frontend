@@ -19,7 +19,7 @@ export async function POST(req:NextRequest){
         console.log(fireBaseResponse);
         switch(fireBaseResponse){ //TODO handle other error code.
             case "auth/weak-password": //TODO handle correct error code.
-                message="Password too weak";
+                message="Password is too weak";
                 statusCode=500;
                 break;
             case "auth/email-already-in-use":

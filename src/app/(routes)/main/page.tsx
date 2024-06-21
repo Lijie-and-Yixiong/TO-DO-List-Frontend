@@ -1,7 +1,7 @@
 import ParagraphComponent from "@/app/(components)/mainCompos/paragraphComponent"
 import CreateUserCard from "@/app/(components)/mainCompos/createUserCard"
 export default function Main(){
-    //TODO GEO location
+    //TODO GEO location to get timezone
     //TODO get cookie privacy
     //TODO push notification
     return(

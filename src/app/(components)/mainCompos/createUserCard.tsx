@@ -1,13 +1,13 @@
 'use client'
 import { UserBasicInfo } from "@/utils/types";
-import { FormEvent, useState } from "react";
-
+import { FormEvent,MouseEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CreateUserCard(){
+    const router=useRouter();
     const [userName,setUserName]=useState('');
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
-
     async function handleSubmit(e:FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const data:UserBasicInfo={
@@ -23,7 +23,11 @@ export default function CreateUserCard(){
             body:JSON.stringify(data),
         })
         console.log(response);
-        //TODO check server response
+    }
+
+    function handleLoginBtn(e: MouseEvent<HTMLButtonElement>){
+        e.preventDefault();
+        router.push('/login');
     }
 
     return(
@@ -57,10 +61,13 @@ export default function CreateUserCard(){
                 {/* TODO setup the link to recover password */}
             </label>
             </div>
-            <div className="form-control mt-6">
+            <div className="form-control mt-6 flex">
             <button className="btn btn-primary">Create!</button>
             </div>
+            <p>Already a user?</p>
+            <button className="btn btn-primary" onClick={handleLoginBtn}>Login here!</button>
         </form>
+        
         </div>
     )
 }

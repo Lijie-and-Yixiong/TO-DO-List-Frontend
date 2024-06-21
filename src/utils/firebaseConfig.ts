@@ -6,7 +6,7 @@ import { collection, getFirestore, onSnapshot,getDocs, doc, getDoc,
         
     } from "firebase/firestore";
 import { initialize } from "next/dist/server/lib/render-server";
-import { TodoItem } from "./types";
+import { TodoItem, UserBasicInfo } from "./types";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBGYUPFMSA-Y96MFI6Q2AZxQxk-FQuWxLk",
@@ -75,10 +75,10 @@ const addTodoItem=async(todoItem:TodoItem)=>{
     }
 }
 
-const addUserDoc=async(userName:string,user_id:string)=>{
+const addUserDoc=async(uid:string,userName:string)=>{
     try{
         addDoc(userInfoCollectionRef,{
-            "user_id":user_id,
+            "user_id":uid,
             "username":userName
         })
     }catch(err){
