@@ -81,7 +81,7 @@ export default function Dashboard({params}:any){
 
     return(
         <div className="">
-            <Navbar/>
+                <Navbar/>
             <div className="bg-primary text-primary-content flex"> 
                 <button className="btn btn-ghost text-xl" onClick={handleTodoFolding}>Todo List </button>
                 {isShowingTodo?(<p>-</p>):(<p>+</p>)}
