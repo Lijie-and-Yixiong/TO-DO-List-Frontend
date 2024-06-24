@@ -6,26 +6,33 @@ import {  jwtVerify } from 'jose';
 const secret = new TextEncoder().encode(process.env.TOKEN_SECRET_KEY);
 export async function middleware(request: NextRequest) {
     const path=request.nextUrl.pathname;
-    const isPublicPath=path==='/login'||path==='/signup'||path=='/main';
-    //TODO need to redirect to user dashboard after login and other path actions.
+    const publicPathArr=['/main','/login','signup'];
     const sessionToken= request.cookies.get('session')?.value||'';
     let currUser:string="";
-    try{
+
+    try{ //check user name in cookie
         const payload=(await jwtVerify(sessionToken,secret)).payload;
         currUser=payload.userName as string;
     }catch(err){
         console.log("jwt verify err "+err);
     }
-    if(path.startsWith('/dashboard')){
-        const userNameInPath=path.split('/')[1];
-    }
-    if(isPublicPath&&sessionToken){
-        return NextResponse.redirect(new URL(`/dashboard/${currUser}`,request.nextUrl));
-    }
-    if(!isPublicPath&&!sessionToken){
-        return NextResponse.redirect(new URL('/main',request.nextUrl));
+
+
+    // if(path.startsWith('/dashboard')){
+    //     const userNameInPath=path.split('/')[1];
+    // }
+
+    if(publicPathArr.includes(path)){
+        return NextResponse.next();
     }
 
+    if(sessionToken!=""){
+        console.log("in session redirect")
+        return NextResponse.redirect(new URL(`/dashboard/${currUser}`,request.nextUrl));
+    }
+    else{
+        return NextResponse.redirect(new URL('/main',request.nextUrl));
+    }
 
 }
 

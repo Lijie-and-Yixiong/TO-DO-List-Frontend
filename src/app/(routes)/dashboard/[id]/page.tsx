@@ -53,10 +53,8 @@ export default function Dashboard({params}:any){
                 try {
                     const fetchedData = await fetch('/api/todolist')
                         .then(response=>response.json());
-                    console.log(fetchedData);
                     setTodoItems(fetchedData.data.filter((item:TodoItem)=>item.is_completed==false));
                     setCompletedItems(fetchedData.data.filter((item:TodoItem)=>item.is_completed==true));
-
                     setIsLoading(false);
                 } catch (error) {
                 console.error('Error fetching data:', error);
@@ -81,7 +79,7 @@ export default function Dashboard({params}:any){
 
     return(
         <div className="">
-                <Navbar/>
+                <Navbar isLogin={true}/>
             <div className="bg-primary text-primary-content flex"> 
                 <button className="btn btn-ghost text-xl" onClick={handleTodoFolding}>Todo List </button>
                 {isShowingTodo?(<p>-</p>):(<p>+</p>)}

@@ -31,10 +31,10 @@ export default function Login(){
                 },
                 body:JSON.stringify(data)
             });
-            router.push('/main'); //TODO get user name from backend and redirect to dashboard
             const responseJSON=await response.json();
+            router.push('/dashboard/'+responseJSON.userName);
         }catch(err){
-            console.log(err);
+            console.log("Login Page Err "+err);
         }
         setEmail('');
         setUserName('');
@@ -60,7 +60,7 @@ export default function Login(){
 
     return (
         <div className="min-h-screen flex flex-col bg-orange-200">
-            <Navbar/>
+            <Navbar isLogin={false}/>
 
             {isLogin?(<h1>Log in success</h1>):(<h1>Please login first</h1>)}
             <div className="flex flex-grow justify-center items-center">

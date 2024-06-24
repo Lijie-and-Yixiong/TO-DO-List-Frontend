@@ -1,6 +1,10 @@
 import Link from 'next/link'
 import { useState } from 'react'
-export default function Navbar(){
+
+interface NavbarProps{
+    isLogin:boolean
+}
+export default function Navbar({isLogin}:NavbarProps){
     const [userName,setUserName]=useState('');
     return(
         <div className="navbar bg-base-100">
