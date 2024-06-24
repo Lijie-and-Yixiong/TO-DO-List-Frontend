@@ -1,11 +1,23 @@
 import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 
 interface NavbarProps{
     isLogin:boolean
 }
 export default function Navbar({isLogin}:NavbarProps){
+    const router=useRouter();
     const [userName,setUserName]=useState('');
+
+    async function handleLogoutBtn(){
+        const response=await fetch('/api/logout',{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+        }) 
+        router.push('/main');
+    }
     return(
         <div className="navbar bg-base-100">
             <div className="flex-1">
@@ -13,7 +25,7 @@ export default function Navbar({isLogin}:NavbarProps){
             </div>
             <div className="flex-none">
                 <ul className="menu menu-horizontal px-1">
-                <li><Link href="/main">Main</Link></li>
+                {isLogin&&(<li><button onClick={handleLogoutBtn} className=" border border-black">Log out</button></li>)}
                 <li>
                     <details>
                     <summary>
