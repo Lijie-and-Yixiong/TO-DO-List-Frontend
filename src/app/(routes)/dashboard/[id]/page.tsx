@@ -37,6 +37,7 @@ export default function Dashboard({params}:any){
         setCurrDueDate
     }
     useEffect(()=>{
+        //TODO redirect user to main if there is no session
         const checkLogin=async ()=>{
             const response=await fetch ('/api/checkSession',{
                 method:'POST',
